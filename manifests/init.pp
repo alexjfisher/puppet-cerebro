@@ -12,8 +12,20 @@ class cerebro (
   $java_opts           = $::cerebro::params::java_opts,
   $java_home           = $::cerebro::params::java_home,
   $basic_auth_settings = $::cerebro::params::basic_auth_settings,
+  $ldap_auth_settings  = $::cerebro::params::ldap_auth_settings,
   $address             = $::cerebro::params::address,
 ) inherits cerebro::params {
+
+  if $basic_auth_settings {
+    validate_hash($basic_auth_settings)
+  }
+  if $ldap_auth_settings {
+    validate_hash($ldap_auth_settings)
+  }
+
+  if $basic_auth_settings and $ldap_auth_settings {
+    fail('You can\'t specify both `basic_auth_settings` and `ldap_auth_settings`')
+  }
 
   if $manage_user {
     contain '::cerebro::user'

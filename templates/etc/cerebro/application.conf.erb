@@ -12,6 +12,14 @@ auth: {
 <% end -%>
   }
 <% end -%>
+<% if @ldap_auth_settings -%>
+  type: ldap
+  settings: {
+<% @ldap_auth_settings.each do |k,v| -%>
+    <%= k %> = "<%= v %>"
+<% end -%>
+  }
+<% end -%>
 }
 hosts = [
 <% @hosts.each do |host| -%>
